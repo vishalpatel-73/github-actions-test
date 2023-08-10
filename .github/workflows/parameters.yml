@@ -1,12 +1,11 @@
 name: store_secret
 on: [push]
 jobs:
-  add_to_ssm:
-    runs-on: ubuntu-latest
-    name: Store a Secret
-    steps:
-      - name: Configure AWS Credentials
-        run: echo "Access Key " ${{ secrets.AWS_ACCESS_KEY_ID }} "Secret Key " ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    run-shell-command:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Store a Secret
+          run: echo "Access Key " ${{ secrets.AWS_ACCESS_KEY_ID }} "Secret Key " ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         # uses: aws-actions/configure-aws-credentials@v1
         # with:
         #   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
