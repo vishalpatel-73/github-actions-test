@@ -15,19 +15,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          role-to-assume: "arn:aws:iam::943725333913:user/VishalPatelCICDTestGithubActions"
-          role-duration-seconds: 900 # 15 mins
 
-      # - uses: "marvinpinto/action-inject-ssm-secrets@latest"
-      #   with:
-      #     ssm_parameter: "/my-app/${{ env.build_stage }}/db-url"
-      #     env_variable_name: "db_url"
-# 
-      # - uses: "marvinpinto/action-inject-ssm-secrets@latest"
-      #   with:
-      #     ssm_parameter: "/my-app/${{ env.build_stage }}/db-password"
-      #     env_variable_name: "db_password"
-# 
-      # - name: "Build & Deploy"
-      #   run: |
-      #     echo "You will now have access to the db_url and db_password environment variables in all your subsequent build steps"
+      - uses: dkershner6/aws-ssm-getparameters-action@v1
+        with:
+          parameterPairs: "/region/primary = PRIMARY_AWS_REGION,
+            /accountAlias = AWS_ACCOUNT_ALIAS"
+          # The part before equals is the ssm parameterName, and after is the ENV Variable name for the workflow.
+          # No limit on number of parameters. You can put new lines and spaces in as desired, they get trimmed out.
+          withDecryption: "true" # defaults to true
