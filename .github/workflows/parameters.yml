@@ -1,16 +1,31 @@
-name: store_secret
+name: "build-and-invalidate-cf-cache"
 on: [push]
+
 jobs:
-  run-shell-command:
-    runs-on: ubuntu-latest
+  ci:
+    runs-on: "ubuntu-latest"
+    env:
+      BUILD_STAGE: "dev"
+
     steps:
-      - name: Configure AWS credentials
-        id: aws-credentials
-        uses: nohmad/aws-ssm-parameter-store-action@master # aws-actions/configure-aws-credentials@v1
+      - uses: "aws-actions/configure-aws-credentials@v1"
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-          path: /my-app/dev/
-          format: dotenv
-          filename: .env
+          aws-region: "us-east-1"
+          # role-to-assume: "arn:aws:iam::111111111111:role/build-and-deploy-website"
+          # role-duration-seconds: 1800 # 30 mins
+
+      - uses: "marvinpinto/action-inject-ssm-secrets@latest"
+        with:
+          ssm_parameter: "/my-app/${{ env.BUILD_STAGE }}/db-url"
+          env_variable_name: "db_url"
+
+      - uses: "marvinpinto/action-inject-ssm-secrets@latest"
+        with:
+          ssm_parameter: "/my-app/${{ env.BUILD_STAGE }}/db-password"
+          env_variable_name: "db_password"
+
+      - name: "Build & Deploy"
+        run: |
+          echo "You will now have access to the db_url and db_password environment variables in all your subsequent build steps"
