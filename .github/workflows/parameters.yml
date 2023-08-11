@@ -1,29 +1,25 @@
-name: "build-and-invalidate-cf-cache"
+name: fetch_parameter
 on: [push]
-
 jobs:
-  ci:
-    runs-on: "ubuntu-latest"
-    env:
-      BUILD_STAGE: "dev"
-
+  run-shell-command:
+    runs-on: ubuntu-latest
     steps:
-      - uses: "aws-actions/configure-aws-credentials@v1"
+      - name: Configure AWS credentials
+        id: aws-credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "us-east-1"
-          role-to-assume: "arn:aws:iam::943725333913:user/VishalPatelCICDTestGithubActions"
-          # role-duration-seconds: 1800 # 30 mins
+          aws-region: us-east-1
 
       - uses: "marvinpinto/action-inject-ssm-secrets@latest"
         with:
-          ssm_parameter: "/my-app/${{ env.BUILD_STAGE }}/db-url"
+          ssm_parameter: "/my-app/dev/db-url"
           env_variable_name: "db_url"
 
       - uses: "marvinpinto/action-inject-ssm-secrets@latest"
         with:
-          ssm_parameter: "/my-app/${{ env.BUILD_STAGE }}/db-password"
+          ssm_parameter: "/my-app/dev/db-password"
           env_variable_name: "db_password"
 
       - name: "Build & Deploy"
