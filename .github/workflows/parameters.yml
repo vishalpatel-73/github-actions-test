@@ -1,13 +1,16 @@
 name: store_secret
 on: [push]
 jobs:
-    run-shell-command:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Store a Secret
-          run: echo "Access Key " ${{ secrets.AWS_ACCESS_KEY_ID }} "Secret Key " ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        # uses: aws-actions/configure-aws-credentials@v1
-        # with:
-        #   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        #   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        #   aws-region: eu-west-1
+  run-shell-command:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        id: aws-credentials
+        uses: nohmad/aws-ssm-parameter-store-action@master # aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          path: /my-app/dev/
+          format: dotenv
+          filename: .env
