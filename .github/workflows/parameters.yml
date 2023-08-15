@@ -22,7 +22,7 @@ jobs:
           parameterPairs: " 
             /my-app/dev/db-url = database_url,
             /my-app/dev/db-password = database_password"
-          withDecryption: false
+          withDecryption: true
       
       - name: "Build & Deploy"
         run: |
