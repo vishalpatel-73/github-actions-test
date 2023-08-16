@@ -19,14 +19,14 @@ jobs:
       - name: Get Reporting variables from AWS SSM
         uses: dkershner6/aws-ssm-getparameters-action@v1
         with:
-          parameterPairs: " 
-            /my-app/dev/db-url = database_url,
-            /my-app/dev/db-password = database_password"
-          withDecryption: true
-      
+          parameterPairs: "
+            /my-app/${{env.build_stage}}/db-url = database_url,
+            /my-app/${{env.build_stage}}/db-password = database_password"
+          withDecryption: false
+
       - name: "Build & Deploy"
         run: |
-          echo "You will now have access to the database_url and database_password environment variables in all your subsequent build steps"      
+          echo "You will now have access to the database_url and database_password environment variables in all your subsequent build steps"
 
       # - uses: dkershner6/aws-ssm-getparameters-action@v1
       #   with:
