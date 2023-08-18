@@ -22,7 +22,7 @@ jobs:
           parameterPairs: "
             /my-app/${{env.build_stage}}/db-url = database_url,
             /my-app/${{env.build_stage}}/db-password = database_password"
-          withDecryption: false
+          withDecryption: false # defaults to true
 
       - name: "Build & Deploy"
         run: |
