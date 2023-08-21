@@ -8,7 +8,7 @@ Configure your AWS credentials and region environment variables for use in other
 
 The IAM role the action assumes must have the following permissions:
 
-    * GetParameters on the secrets you want to retrieve.
+- GetParameters on the secrets you want to retrieve.
 
 ```yaml
 - name: Configure AWS credentials
