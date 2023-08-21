@@ -6,10 +6,6 @@ To use this action, you first need to configure AWS credentials and set the AWS 
 
 Configure your AWS credentials and region environment variables for use in other GitHub Actions. This action implements the AWS SDK credential resolution chain and exports environment variables for your other Actions to use. Environment variable exports are detected by both the AWS SDKs and the AWS CLI for AWS API calls.
 
-The IAM role the action assumes must have the following permissions:
-
-- GetParameters on the secrets you want to retrieve.
-
 ```yaml
 - name: Configure AWS credentials
   id: aws-credentials
@@ -26,6 +22,10 @@ The IAM role the action assumes must have the following permissions:
 A GitHub action centered on AWS Systems Manager Parameter Store GetParameters call, and placing the results into environment variables.
 
 This action is optimized to use the least possible number of API calls to Parameter Store, to avoid the low rate limits.
+
+The IAM role the action assumes must have the following permissions:
+
+- GetParameters on the secrets you want to retrieve.
 
 ## Usage
 
