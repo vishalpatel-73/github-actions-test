@@ -14,9 +14,12 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # Retrived the Access Key, and Secret Key from Github Actions.
+          # Before above step generated Access keys for an IAM User. Then stored in Github => Settings => Actions secrets and variables.
+          # Secrets and variables allow you to manage reusable configuration data. Secrets are encrypted and are used for sensitive data.
           aws-region: us-east-1
 
-      - name: Get Reporting variables from AWS SSM
+      - name: Get Variables from AWS SSM Parameter Store
         uses: dkershner6/aws-ssm-getparameters-action@v1
         with:
           parameterPairs: "
